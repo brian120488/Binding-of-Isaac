@@ -5,7 +5,7 @@ from Projectile import Projectile
 
 class Isaac(Sprite):
     ANIMATION_DELAY = 5
-    SPEED = 2.75
+    SPEED = 2.5
     MAX_HEALTH = 5
     IMMUNITY_FRAMES = 70
     FLICKER_LENGTH = 8
