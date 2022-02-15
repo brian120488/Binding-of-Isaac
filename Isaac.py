@@ -7,7 +7,8 @@ class Isaac(Sprite):
     ANIMATION_DELAY = 5
     SPEED = 2.75
     MAX_HEALTH = 5
-    IMMUNITY_FRAMES = 60
+    IMMUNITY_FRAMES = 70
+    FLICKER_LENGTH = 8
 
     def __init__(self, coords):
         super().__init__(coords, None)
@@ -36,10 +37,11 @@ class Isaac(Sprite):
 
     def draw(self, window):
         keys = pygame.key.get_pressed()
-        frame = self.moveCount // Isaac.ANIMATION_DELAY
+        frame = self.moveCount // self.ANIMATION_DELAY
         headX, headY = self.x, self.y - self.height / 2
         legsX, legsY = self.x + 5, self.y + 3
         eyes = 1 if self.projectileTimer <= self.shootingDuration else 0
+        if self.immuneCount % self.FLICKER_LENGTH >= self.FLICKER_LENGTH / 2: return
         match self.directionMoving:
             case (-1, _): 
                 window.blit(self.moveLeftList[frame], (legsX, legsY))
@@ -63,9 +65,7 @@ class Isaac(Sprite):
             self.showHitbox(window)
         
     def move(self):
-        self.projectileTimer += 1
-        if self.isImmune: self.immuneCount += 1
-        if self.immuneCount >= self.IMMUNITY_FRAMES: self.isImmune = False
+        self.update()
 
         keys = pygame.key.get_pressed()
         self.moveCount = (self.moveCount + 1) % (len(self.moveLeftList) * Isaac.ANIMATION_DELAY)
@@ -80,7 +80,6 @@ class Isaac(Sprite):
             self.directionMoving = (1, 0)
         else:
             isMovingX = False
-
         if keys[pygame.K_w]:
             if not isMovingX:
                 self.directionFacing = (0, 1)
@@ -126,6 +125,13 @@ class Isaac(Sprite):
         elif self.getBottom() > HEIGHT:
             self.setBottom(HEIGHT)
     
+    def update(self):
+        self.projectileTimer += 1
+        if self.isImmune: self.immuneCount += 1
+        if self.immuneCount >= self.IMMUNITY_FRAMES: 
+            self.isImmune = False
+            self.immuneCount = 0
+    
     def shoot(self, direction):
         self.directionFacing = direction
 
@@ -144,7 +150,6 @@ class Isaac(Sprite):
         if not self.isImmune:
             self.health -= 1
             self.isImmune = True
-            self.immuneCount = 0
 
     # Returns coordinates of sprite adjusting for offsets
     def getLeft(self):
