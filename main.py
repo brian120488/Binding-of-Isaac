@@ -26,7 +26,7 @@ enemies = [Fly((100, 100)), Maw((300, 100))]
 # *** Global Functions ***
 def drawScore():
     font = pygame.font.SysFont("comicsans", 30, True, False)
-    scoreText = font.render(f'Score: {player.health}', 1, (255, 255, 0))
+    scoreText = font.render(f'Health: {player.health}', 1, (255, 255, 0))
     window.blit(scoreText, (10, 40))
 
 def drawWindow():
@@ -90,9 +90,9 @@ while True:
                 enemy.health -= 1;
                 if enemy.health <= 0:
                     enemies.remove(enemy)
-            elif proj.shotFrom != 'Isaac' and checkCollision(proj, player):
+            elif proj.shotFrom != 'Isaac' and checkCollision(proj, player) and not player.isImmune:
                 projectiles.remove(proj)
-                player.health -= 1;
+                player.hit()
 
         if checkCollision(player, enemy):
             player.hit()
@@ -102,7 +102,7 @@ while True:
             sys.exit()
         
         if isinstance(enemy, Maw):
-            if random.random() < 0.01:
+            if random.random() < 0.005:
                 enemy.shoot(player)
 
 
