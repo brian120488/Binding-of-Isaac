@@ -6,7 +6,6 @@ Version: 12/1/2021
 
 import pygame, sys, random
 from global_vars import *
-from PlayerSprite import PlayerSprite
 from Projectile import Projectile
 from Isaac import Isaac
 from Fly import Fly
