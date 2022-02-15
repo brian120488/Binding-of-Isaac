@@ -25,9 +25,9 @@ enemies = [Fly((100, 100)), Maw((300, 100))]
 
 # *** Global Functions ***
 def drawScore():
-    font = pygame.font.SysFont("comicsans", 30, True, False)
-    scoreText = font.render(f'Health: {player.health}', 1, (255, 255, 0))
-    window.blit(scoreText, (10, 40))
+    font = pygame.font.SysFont("comicsans", 16, True, False)
+    scoreText = font.render(f'Health: {player.health}', 1, (0))
+    window.blit(scoreText, (10, 10))
 
 def drawWindow():
     window.fill("white")
