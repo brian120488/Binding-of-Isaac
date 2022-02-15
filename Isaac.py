@@ -6,7 +6,7 @@ from Projectile import Projectile
 class Isaac(Sprite):
     ANIMATION_DELAY = 5
     SPEED = 2.75
-    MAX_HEALTH = 3
+    MAX_HEALTH = 5
     IMMUNITY_FRAMES = 60
 
     def __init__(self, coords):
@@ -144,6 +144,7 @@ class Isaac(Sprite):
         if not self.isImmune:
             self.health -= 1
             self.isImmune = True
+            self.immuneCount = 0
 
     # Returns coordinates of sprite adjusting for offsets
     def getLeft(self):
