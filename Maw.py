@@ -24,7 +24,7 @@ class Maw(TrackingSprite):
         yScale = -abs(math.sin(ang)) * (dy/abs(dy))
         px = self.getLeft() + self.width / 2
         py = self.getTop() + self.height / 2
-        tearSize = 3
+        tearSize = 2
         tearSPEED = 1.5
         shotFrom = self.__class__.__name__
         projectile = Projectile((px, py), tearSize, tearSPEED, (xScale, yScale), shotFrom)
