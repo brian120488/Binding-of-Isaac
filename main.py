@@ -19,6 +19,8 @@ clock = pygame.time.Clock()
 
 path = 'sprites'
 background = pygame.image.load(f'{path}/background.png').convert()
+gameOverWill = pygame.image.load(f'{path}/last_will.png').convert()
+gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.8, HEIGHT * 0.8))
 
 player = Isaac((50, 400))
 enemies = [Fly((100, 100)), Maw((300, 100))]
@@ -73,6 +75,12 @@ def isOnPlatform(obj):
         return True
     return False
 
+def drawGameOver():
+    x = (WIDTH - gameOverWill.get_width()) / 2
+    y = (HEIGHT - gameOverWill.get_height()) / 2
+    window.blit(gameOverWill, (x, y))
+    pygame.display.update()
+
 # *** Pygame Loop ***
 while True: 
     clock.tick(60)
@@ -81,6 +89,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            
+    if isGameOver:
+        drawGameOver()
+        continue
 
     projectiles = Projectile.projectiles
     for enemy in enemies:
@@ -98,8 +110,8 @@ while True:
             player.hit()
         
         if player.health <= 0:
-            pygame.quit()
-            sys.exit()
+            isGameOver = True
+            continue
         
         if isinstance(enemy, Maw):
             if random.random() < 0.005:
