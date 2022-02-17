@@ -1,9 +1,3 @@
-"""
-Name: Brian Yang
-Title: Pygame
-Version: 12/1/2021
-"""
-
 import pygame, sys, random
 from global_vars import *
 from Projectile import Projectile
