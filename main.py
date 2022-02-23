@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 
 path = 'sprites'
 background = pygame.image.load(f'{path}/background.png').convert()
-gameOverWill = pygame.image.load(f'{path}/last_will.png').convert()
+gameOverWill = pygame.image.load(f'{path}/last_will.png')
 gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.8, HEIGHT * 0.8))
 
 player = Isaac((50, 400))
@@ -72,6 +72,7 @@ def isOnPlatform(obj):
 def drawGameOver():
     x = (WIDTH - gameOverWill.get_width()) / 2
     y = (HEIGHT - gameOverWill.get_height()) / 2
+    window.fill("white")
     window.blit(gameOverWill, (x, y))
     pygame.display.update()
 
