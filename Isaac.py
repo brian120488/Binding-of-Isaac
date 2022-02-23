@@ -34,6 +34,7 @@ class Isaac(Sprite):
         self.health = self.MAX_HEALTH
         self.isImmune = False
         self.immuneCount = 0
+        self.diedTo = None
 
     def draw(self, window):
         keys = pygame.key.get_pressed()
@@ -146,10 +147,11 @@ class Isaac(Sprite):
             projectile = Projectile((px, py), tearSize, tearSPEED, direction, shotFrom)
             projectiles.append(projectile)
 
-    def hit(self):
+    def hitBy(self, enemy):
         if not self.isImmune:
             self.health -= 1
             self.isImmune = True
+        self.diedTo = enemy
 
     # Returns coordinates of sprite adjusting for offsets
     def getLeft(self):

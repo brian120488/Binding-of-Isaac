@@ -70,10 +70,13 @@ def isOnPlatform(obj):
     return False
 
 def drawGameOver():
-    x = (WIDTH - gameOverWill.get_width()) / 2
-    y = (HEIGHT - gameOverWill.get_height()) / 2
+    midX = (WIDTH - gameOverWill.get_width()) / 2
+    midY = (HEIGHT - gameOverWill.get_height()) / 2
     window.fill("white")
-    window.blit(gameOverWill, (x, y))
+    window.blit(gameOverWill, (midX, midY))
+    x, y = 300, 210
+    deathObject = player.diedTo.__class__((x, y))
+    deathObject.draw(window)
     pygame.display.update()
 
 # *** Pygame Loop ***
@@ -99,10 +102,10 @@ while True:
                     enemies.remove(enemy)
             elif proj.shotFrom != 'Isaac' and checkCollision(proj, player) and not player.isImmune:
                 projectiles.remove(proj)
-                player.hit()
+                player.hitBy(proj)
 
         if checkCollision(player, enemy):
-            player.hit()
+            player.hitBy(enemy)
         
         if player.health <= 0:
             isGameOver = True
