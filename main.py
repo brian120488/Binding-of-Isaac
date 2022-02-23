@@ -1,5 +1,5 @@
 import pygame, sys, random
-from global_vars import *
+from settings import *
 from Projectile import Projectile
 from Isaac import Isaac
 from Fly import Fly
