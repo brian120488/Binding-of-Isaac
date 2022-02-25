@@ -28,8 +28,8 @@ isGameOver = False
 player = Isaac((50, 400))
 enemies = [Fly((100, 100)), Maw((300, 100))]
 
-highScore = int(config['game']['high_score'])
 bestTime = float(config['game']['best_time'])
+currTime = 0
 
 # *** Global Functions ***
 def drawScore():
@@ -89,21 +89,21 @@ def drawGameOver():
     x, y = 300, 210
     deathObject = player.diedTo.__class__((x, y))
     deathObject.draw(window)
+    font = pygame.font.SysFont("arialblack", 16, True, False)
+    currTimeText = font.render(f'Time: {round(currTime / FPS, 3)}', 1, (0))
+    bestTimeText = font.render(f'Best Time: {bestTime}', 1, (0))
+    window.blit(currTimeText, (100, 290))
+    window.blit(bestTimeText, (100, 310))
     pygame.display.update()
 
 def checkGameStats():
-    global score
-    global highScore
     global bestTime
 
     write = False
 
-    if score > highScore:
-        config.set('game', 'high_score', str(score))
-        write = True
-        
-    if round(timer / FPS, 3) < bestTime:
-        config.set('game', 'bestTTime', str(round(timer / FPS, 3)))
+    time = round(currTime / FPS, 3)
+    if time < bestTime:
+        config.set('game', 'best_time', str(time))
         write = True
         
     if write:
@@ -127,7 +127,10 @@ while True:
             
     if isGameOver:
         drawGameOver()
+        checkGameStats()
         continue
+    else:
+        currTime += 1
 
     projectiles = Projectile.projectiles
     for enemy in enemies:
