@@ -17,6 +17,7 @@ background = pygame.image.load(f'{path}/background.png').convert()
 gameOverWill = pygame.image.load(f'{path}/last_will.png')
 gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.8, HEIGHT * 0.8))
 
+isGameOver = False
 player = Isaac((50, 400))
 enemies = [Fly((100, 100)), Maw((300, 100))]
 
