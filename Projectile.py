@@ -1,5 +1,5 @@
 import pygame
-from global_vars import *
+from settings import *
 from Sprite import Sprite
 
 class Projectile(Sprite):

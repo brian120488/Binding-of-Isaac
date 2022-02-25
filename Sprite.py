@@ -1,5 +1,5 @@
 import pygame
-from global_vars import *
+from settings import *
 
 class Sprite(object):
     def __init__(self, coords, size, image=None):

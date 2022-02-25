@@ -1,5 +1,5 @@
 from Sprite import Sprite
-from global_vars import *
+from settings import *
 
 class AnimatedSprite(Sprite):
     def __init__(self, coords, moveLists, animDelay):

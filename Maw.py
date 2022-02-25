@@ -1,5 +1,5 @@
 import pygame, math
-from global_vars import *
+from settings import *
 from TrackingSprite import TrackingSprite
 from Projectile import Projectile
 

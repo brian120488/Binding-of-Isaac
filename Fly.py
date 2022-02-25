@@ -1,5 +1,5 @@
 import pygame
-from global_vars import *
+from settings import *
 from TrackingSprite import TrackingSprite
 
 class Fly(TrackingSprite):
