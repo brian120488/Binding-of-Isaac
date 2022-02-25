@@ -1,7 +1,8 @@
 import pygame, sys, random
+import configparser
 from settings import *
-from Projectile import Projectile
 from Isaac import Isaac
+from Projectile import Projectile
 from Fly import Fly
 from Maw import Maw
 
@@ -18,6 +19,8 @@ gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.8, HEIGHT * 0.8))
 
 player = Isaac((50, 400))
 enemies = [Fly((100, 100)), Maw((300, 100))]
+
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 
 # *** Global Functions ***
 def drawScore():
