@@ -7,6 +7,13 @@ from Fly import Fly
 from Maw import Maw
 
 # *** Initilization ***
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+config.read('config.ini')
+
+FPS = int(config.get('settings', 'fps', fallback=60))
+WIDTH = int(config.get('settings', 'width', fallback=500))
+HEIGHT = int(config.get('settings', 'height', fallback=480))
+
 pygame.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Binding of Isaac')  
@@ -21,7 +28,8 @@ isGameOver = False
 player = Isaac((50, 400))
 enemies = [Fly((100, 100)), Maw((300, 100))]
 
-config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+highScore = int(config['game']['high_score'])
+bestTime = float(config['game']['best_time'])
 
 # *** Global Functions ***
 def drawScore():
@@ -83,9 +91,34 @@ def drawGameOver():
     deathObject.draw(window)
     pygame.display.update()
 
+def checkGameStats():
+    global score
+    global highScore
+    global bestTime
+
+    write = False
+
+    if score > highScore:
+        config.set('game', 'high_score', str(score))
+        write = True
+        
+    if round(timer / FPS, 3) < bestTime:
+        config.set('game', 'bestTTime', str(round(timer / FPS, 3)))
+        write = True
+        
+    if write:
+        with open('config.ini', 'w') as configfile:
+            config.write(configfile)
+
+def loadImageList(files):
+    L = []
+    for f in files:
+        L.append(pygame.image.load(f))
+    return L
+
 # *** Pygame Loop ***
 while True: 
-    clock.tick(60)
+    clock.tick(FPS)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
