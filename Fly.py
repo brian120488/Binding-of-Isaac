@@ -1,5 +1,4 @@
 import pygame
-from settings import *
 from TrackingSprite import TrackingSprite
 
 class Fly(TrackingSprite):

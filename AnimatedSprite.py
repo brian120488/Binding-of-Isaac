@@ -1,5 +1,4 @@
 from Sprite import Sprite
-from settings import *
 
 class AnimatedSprite(Sprite):
     def __init__(self, coords, moveLists, animDelay):
@@ -13,9 +12,6 @@ class AnimatedSprite(Sprite):
     def draw(self, window):
         frame = self.moveCount // self.animDelay
         window.blit(self.moveLeftList[frame], (self.x, self.y))
-        
-        if SHOW_HITBOXES:
-            self.showHitbox(window)
     
     def update(self):
         self.updateAnimation()

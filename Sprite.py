@@ -1,5 +1,4 @@
 import pygame
-from settings import *
 
 class Sprite(object):
     def __init__(self, coords, size, image=None):
@@ -19,8 +18,6 @@ class Sprite(object):
         px = (self.getLeft() + self.getRight) / 2
         py = (self.getTop() + self.getBottom) / 2
         window.blit(self.image, (px, py))
-        if SHOW_HITBOXES:
-            self.hitbox(window)
 
     def hit(self):
         pass

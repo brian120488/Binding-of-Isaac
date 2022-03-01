@@ -1,7 +1,18 @@
 import pygame, math
-from settings import *
+import configparser
 from Sprite import Sprite
 from Projectile import Projectile
+
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+config.read('config.ini')
+
+WIDTH = int(config.get('settings', 'width', fallback=500))
+HEIGHT = int(config.get('settings', 'height', fallback=480))
+
+LEFT_BOUND = float(config['settings']['left_bound_scale']) * WIDTH
+RIGHT_BOUND = float(config['settings']['right_bound_scale']) * WIDTH
+TOP_BOUND = float(config['settings']['top_bound_scale']) * HEIGHT
+BOTTOM_BOUND = float(config['settings']['bottom_bound_scale']) * HEIGHT
 
 class Isaac(Sprite):
     ANIMATION_DELAY = 5
@@ -61,9 +72,6 @@ class Isaac(Sprite):
                 window.blit(self.heads[2][eyes], (headX, headY))
             case (_, -1):
                 window.blit(self.heads[0][eyes], (headX, headY))
-
-        if SHOW_HITBOXES:
-            self.showHitbox(window)
         
     def move(self):
         self.update()
@@ -117,14 +125,14 @@ class Isaac(Sprite):
         self.x += dx
         self.y += dy
 
-        if self.getLeft() < 0:
-            self.setLeft(0)
-        elif self.getRight() > WIDTH:
-            self.setRight(WIDTH)
-        if self.getTop() < 0:
-            self.setTop(0)
-        elif self.getBottom() > HEIGHT:
-            self.setBottom(HEIGHT)
+        if self.getLeft() < LEFT_BOUND:
+            self.setLeft(LEFT_BOUND)
+        elif self.getRight() > RIGHT_BOUND:
+            self.setRight(RIGHT_BOUND)
+        if self.getTop() < TOP_BOUND:
+            self.setTop(TOP_BOUND)
+        elif self.getBottom() > BOTTOM_BOUND:
+            self.setBottom(BOTTOM_BOUND)
     
     def update(self):
         self.projectileTimer += 1

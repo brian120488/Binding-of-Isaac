@@ -1,6 +1,5 @@
 import pygame, sys, random
 import configparser
-from settings import *
 from Isaac import Isaac
 from Projectile import Projectile
 from Fly import Fly
@@ -20,12 +19,13 @@ pygame.display.set_caption('Binding of Isaac')
 clock = pygame.time.Clock()
 
 path = 'sprites'
-background = pygame.image.load(f'{path}/background.png').convert()
+background = pygame.image.load(f'{path}/Monstro1.png')
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 gameOverWill = pygame.image.load(f'{path}/last_will.png')
 gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.8, HEIGHT * 0.8))
 
 isGameOver = False
-player = Isaac((50, 400))
+player = Isaac((WIDTH / 2, HEIGHT / 2))
 enemies = [Fly((100, 100)), Maw((300, 100))]
 
 bestTime = float(config['game']['best_time'])
@@ -38,7 +38,7 @@ def drawScore():
     window.blit(scoreText, (10, 10))
 
 def drawWindow():
-    window.fill("white")
+    window.fill((116,63,51))
     window.blit(background, (0, 0))
     for enemy in enemies:
         enemy.track(player)
@@ -46,6 +46,12 @@ def drawWindow():
     drawScore()
     Projectile.drawAll(window)
     player.draw(window)
+    LEFT_BOUND = 55
+    TOP_BOUND = 105
+    BOTTOM_BOUND = 370
+    RIGHT_BOUND = 440
+    pygame.draw.line(window, "red", (55, 105), (55, 370))
+    pygame.draw.line(window, "red", (55, 105), (440, 105))
     pygame.display.update()
 
 def checkCollision(obj1, obj2):

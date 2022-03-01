@@ -1,6 +1,12 @@
 import pygame
-from settings import *
+import configparser
 from Sprite import Sprite
+
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+config.read('config.ini')
+
+WIDTH = int(config.get('settings', 'width', fallback=500))
+HEIGHT = int(config.get('settings', 'height', fallback=480))
 
 class Projectile(Sprite):
     projectiles = []

@@ -1,5 +1,4 @@
 import pygame, math
-from settings import *
 from TrackingSprite import TrackingSprite
 from Projectile import Projectile
 

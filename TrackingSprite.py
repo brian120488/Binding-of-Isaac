@@ -1,5 +1,4 @@
 import pygame, math
-from settings import *
 from AnimatedSprite import AnimatedSprite
 
 class TrackingSprite(AnimatedSprite):
@@ -20,9 +19,6 @@ class TrackingSprite(AnimatedSprite):
             window.blit(self.moveLeftList[frame], (self.x, self.y))
         else:
             window.blit(self.moveRightList[frame], (self.x, self.y))
-
-        if SHOW_HITBOXES:
-            self.showHitbox(window)
 
     def track(self, player):
         dx = player.x - self.x
