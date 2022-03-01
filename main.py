@@ -46,12 +46,6 @@ def drawWindow():
     drawScore()
     Projectile.drawAll(window)
     player.draw(window)
-    LEFT_BOUND = 55
-    TOP_BOUND = 105
-    BOTTOM_BOUND = 370
-    RIGHT_BOUND = 440
-    pygame.draw.line(window, "red", (55, 105), (55, 370))
-    pygame.draw.line(window, "red", (55, 105), (440, 105))
     pygame.display.update()
 
 def checkCollision(obj1, obj2):
