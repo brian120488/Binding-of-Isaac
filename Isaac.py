@@ -6,9 +6,9 @@ from Projectile import Projectile
 class Isaac(Sprite):
     ANIMATION_DELAY = 5
     SPEED = 2.5
-    MAX_HEALTH = 1
+    MAX_HEALTH = 100
     IMMUNITY_FRAMES = 70
-    FLICKER_LENGTH = 8
+    FLICKER_LENGTH = 4  # will switch every n frames
 
     def __init__(self, coords):
         super().__init__(coords, None)
@@ -42,7 +42,7 @@ class Isaac(Sprite):
         headX, headY = self.x, self.y - self.height / 2
         legsX, legsY = self.x + 5, self.y + 3
         eyes = 1 if self.projectileTimer <= self.shootingDuration else 0
-        if self.immuneCount % self.FLICKER_LENGTH >= self.FLICKER_LENGTH / 2: return
+        if self.immuneCount % (2 * self.FLICKER_LENGTH) >= self.FLICKER_LENGTH: return
         match self.directionMoving:
             case (-1, _): 
                 window.blit(self.moveLeftList[frame], (legsX, legsY))
