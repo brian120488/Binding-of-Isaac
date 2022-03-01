@@ -4,7 +4,7 @@ from TrackingSprite import TrackingSprite
 
 class Fly(TrackingSprite):
     ANIMATION_DELAY = 3
-    SPEED = 1.25
+    SPEED = 1.5
     MAX_HEALTH = 3
 
     def __init__(self, coords):
