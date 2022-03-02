@@ -1,6 +1,7 @@
 import pygame, sys, random
 import configparser
 from Isaac import Isaac
+from Sprite import Sprite
 from Projectile import Projectile
 from Fly import Fly
 from Maw import Maw
@@ -12,6 +13,10 @@ config.read('config.ini')
 FPS = int(config.get('settings', 'fps', fallback=60))
 WIDTH = int(config.get('settings', 'width', fallback=500))
 HEIGHT = int(config.get('settings', 'height', fallback=480))
+LEFT_BOUND = float(config['settings']['left_bound_scale']) * WIDTH
+RIGHT_BOUND = float(config['settings']['right_bound_scale']) * WIDTH
+TOP_BOUND = float(config['settings']['top_bound_scale']) * HEIGHT
+BOTTOM_BOUND = float(config['settings']['bottom_bound_scale']) * HEIGHT
 
 pygame.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -23,11 +28,12 @@ background = pygame.image.load(f'{path}/Monstro1.png')
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 gameOverWill = pygame.image.load(f'{path}/last_will.png')
 gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.5, HEIGHT * 0.8))
+rockImage = pygame.image.load(f'{path}/rock.png')
 
 isGameOver = False
 player = Isaac((WIDTH / 2, HEIGHT / 2))
 enemies = [Fly((100, 100)), Maw((300, 100))]
-
+rocks = []
 bestTime = float(config['game']['best_time'])
 currTime = 0
 
@@ -40,10 +46,11 @@ def drawScore():
 def drawWindow():
     window.fill((116,63,51))
     window.blit(background, (0, 0))
+    drawScore()
+    drawRocks()
     for enemy in enemies:
         enemy.track(player)
         enemy.draw(window)
-    drawScore()
     Projectile.drawAll(window)
     player.draw(window)
     pygame.display.update()
@@ -60,19 +67,19 @@ def checkCollisionList(obj1, L):
             collisionList.append(obj)
     return collisionList
 
-def buildPlatforms(startX, startY, pWidth, pHeight, pLength, image):
-    image = pygame.transform.scale(image, (pWidth, pHeight))
-    for i in range(pLength):
-        px = startX + i * pWidth
-        py = startY
-        platform = Sprite((px, py), (pWidth, pHeight), image)
-        platforms.append(platform)
+def buildRocks(x, y, width, height, length, image):
+    image = pygame.transform.scale(image, (width, height))
+    for i in range(length):
+        px = x + i * width
+        py = y
+        rock = Sprite((px, py), (width, height), image)
+        rocks.append(rock)
 
-def drawPlatforms():
-    for platform in platforms:
-        platform.draw(window)
+def drawRocks():
+    for rock in rocks:
+        rock.draw(window)
 
-def isOnPlatform(obj):
+def isNextToRock(obj):
     bottom = obj.getBottom()
     obj.setBottom(bottom + 5)
     collisions = checkCollisionList(obj, platforms)
@@ -117,6 +124,32 @@ def loadImageList(files):
     for f in files:
         L.append(pygame.image.load(f))
     return L
+
+width, height = 40, 40
+
+# top left corner
+x = LEFT_BOUND - width / 2
+y = TOP_BOUND - height / 4
+buildRocks(x, y, width, height, 2, rockImage)
+buildRocks(x, y + height, width, height, 1, rockImage)
+
+# top right corner
+x = RIGHT_BOUND - 5 * width / 2
+y = TOP_BOUND - height / 4
+buildRocks(x, y, width, height, 2, rockImage)
+buildRocks(x + width, y + height, width, height, 1, rockImage)
+
+# bottom left corner
+x = LEFT_BOUND - width / 2
+y = BOTTOM_BOUND - 1.5 * height
+buildRocks(x, y, width, height, 2, rockImage)
+buildRocks(x, y - height, width, height, 1, rockImage)
+
+# bottom right corner
+x = RIGHT_BOUND - 5 * width / 2
+y = BOTTOM_BOUND - 1.5 * height
+buildRocks(x, y, width, height, 2, rockImage)
+buildRocks(x + width, y - height, width, height, 1, rockImage)
 
 # *** Pygame Loop ***
 while True: 

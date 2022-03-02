@@ -15,8 +15,8 @@ class Sprite(object):
 
     def draw(self, window):
         if not self.visible: return
-        px = (self.getLeft() + self.getRight) / 2
-        py = (self.getTop() + self.getBottom) / 2
+        px = (self.getLeft() + self.getRight()) / 2
+        py = (self.getTop() + self.getBottom()) / 2
         window.blit(self.image, (px, py))
 
     def hit(self):
