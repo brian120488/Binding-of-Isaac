@@ -22,7 +22,7 @@ path = 'sprites'
 background = pygame.image.load(f'{path}/Monstro1.png')
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 gameOverWill = pygame.image.load(f'{path}/last_will.png')
-gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.8, HEIGHT * 0.8))
+gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.5, HEIGHT * 0.8))
 
 isGameOver = False
 player = Isaac((WIDTH / 2, HEIGHT / 2))
@@ -86,14 +86,16 @@ def drawGameOver():
     midY = (HEIGHT - gameOverWill.get_height()) / 2
     window.fill("white")
     window.blit(gameOverWill, (midX, midY))
-    x, y = 300, 210
-    deathObject = player.diedTo.__class__((x, y))
-    deathObject.draw(window)
+    x, y = 355, 170
+    if len(enemies) != 0:
+        deathObject = player.diedTo.__class__((x, y))
+        deathObject.draw(window)
     font = pygame.font.SysFont("arialblack", 16, True, False)
-    currTimeText = font.render(f'Time: {round(currTime / FPS, 3)}', 1, (0))
+    if len(enemies) == 0:
+        currTimeText = font.render(f'Time: {round(currTime / FPS, 3)}', 1, (0))
+        window.blit(currTimeText, (10, HEIGHT - 50))
     bestTimeText = font.render(f'Best Time: {bestTime}', 1, (0))
-    window.blit(currTimeText, (100, 290))
-    window.blit(bestTimeText, (100, 310))
+    window.blit(bestTimeText, (10, HEIGHT - 30))
     pygame.display.update()
 
 def checkGameStats():
@@ -102,7 +104,7 @@ def checkGameStats():
     write = False
 
     time = round(currTime / FPS, 3)
-    if time < bestTime:
+    if time < bestTime and len(enemies) == 0:
         config.set('game', 'best_time', str(time))
         write = True
         
@@ -147,7 +149,7 @@ while True:
         if checkCollision(player, enemy):
             player.hitBy(enemy)
         
-        if player.health <= 0:
+        if player.health <= 0 or len(enemies) == 0:
             isGameOver = True
             continue
         

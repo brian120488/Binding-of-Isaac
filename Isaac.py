@@ -17,7 +17,7 @@ BOTTOM_BOUND = float(config['settings']['bottom_bound_scale']) * HEIGHT
 class Isaac(Sprite):
     ANIMATION_DELAY = 5
     SPEED = 2.5
-    MAX_HEALTH = 100
+    MAX_HEALTH = 3
     IMMUNITY_FRAMES = 70
     FLICKER_LENGTH = 4  # will switch every n frames
 
