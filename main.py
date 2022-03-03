@@ -34,6 +34,7 @@ isGameOver = False
 player = Isaac((WIDTH / 2, HEIGHT / 2))
 enemies = [Fly((100, 100)), Maw((300, 100))]
 rocks = []
+
 bestTime = float(config['game']['best_time'])
 currTime = 0
 
@@ -128,28 +129,29 @@ def loadImageList(files):
 width, height = 40, 40
 
 # top left corner
-x = LEFT_BOUND - width / 2
-y = TOP_BOUND - height / 4
+x = LEFT_BOUND
+y = TOP_BOUND + height / 4
 buildRocks(x, y, width, height, 2, rockImage)
 buildRocks(x, y + height, width, height, 1, rockImage)
 
 # top right corner
-x = RIGHT_BOUND - 5 * width / 2
-y = TOP_BOUND - height / 4
+x = RIGHT_BOUND - 2 * width
+y = TOP_BOUND + height / 4
 buildRocks(x, y, width, height, 2, rockImage)
 buildRocks(x + width, y + height, width, height, 1, rockImage)
 
 # bottom left corner
-x = LEFT_BOUND - width / 2
-y = BOTTOM_BOUND - 1.5 * height
+x = LEFT_BOUND
+y = BOTTOM_BOUND - height
 buildRocks(x, y, width, height, 2, rockImage)
 buildRocks(x, y - height, width, height, 1, rockImage)
 
 # bottom right corner
-x = RIGHT_BOUND - 5 * width / 2
-y = BOTTOM_BOUND - 1.5 * height
+x = RIGHT_BOUND - 2 * width
+y = BOTTOM_BOUND - height
 buildRocks(x, y, width, height, 2, rockImage)
 buildRocks(x + width, y - height, width, height, 1, rockImage)
+
 
 # *** Pygame Loop ***
 while True: 
@@ -189,15 +191,14 @@ while True:
         if isinstance(enemy, Maw):
             if random.random() < 0.005:
                 enemy.shoot(player)
-
+    
+    for rock in rocks:
+        if checkCollision(player, rock):
+            player.reset()
 
     player.move()
     Projectile.moveAll()
-
-    # collisions = checkCollisionList(player, platforms)
-    # if len(collisions) > 0:
-    #     player.setLeft(collisions[0].getRight)
-
+    
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         player.shoot((-1, 0))

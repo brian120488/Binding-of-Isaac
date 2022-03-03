@@ -122,6 +122,8 @@ class Isaac(Sprite):
             self.moveHelper(0, dy)
 
     def moveHelper(self, dx, dy):
+        self.prevX = self.x
+        self.prevY = self.y
         self.x += dx
         self.y += dy
 
@@ -134,6 +136,10 @@ class Isaac(Sprite):
         elif self.getBottom() > BOTTOM_BOUND:
             self.setBottom(BOTTOM_BOUND)
     
+    def reset(self):
+        self.x = self.prevX
+        self.y = self.prevY
+        
     def update(self):
         self.projectileTimer += 1
         if self.isImmune: self.immuneCount += 1
