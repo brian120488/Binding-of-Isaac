@@ -6,6 +6,8 @@ from Projectile import Projectile
 from Fly import Fly
 from Maw import Maw
 
+# TODO: instructions, hearts, make hitboxes smaller
+
 # *** Initilization ***
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('config.ini')

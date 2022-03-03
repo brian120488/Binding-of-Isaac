@@ -1,5 +1,10 @@
 import pygame, math
+import configparser
 from AnimatedSprite import AnimatedSprite
+
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+config.read('config.ini')
+SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
 
 class TrackingSprite(AnimatedSprite):
     ANIMATION_DELAY = 1
@@ -19,6 +24,8 @@ class TrackingSprite(AnimatedSprite):
             window.blit(self.moveLeftList[frame], (self.x, self.y))
         else:
             window.blit(self.moveRightList[frame], (self.x, self.y))
+        
+        if SHOW_HITBOXES: self.showHitbox(window)
 
     def track(self, player):
         dx = player.x - self.x

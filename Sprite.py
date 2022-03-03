@@ -1,4 +1,9 @@
 import pygame
+import configparser
+
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+config.read('config.ini')
+SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
 
 class Sprite(object):
     def __init__(self, coords, size, image=None):
@@ -16,6 +21,7 @@ class Sprite(object):
     def draw(self, window):
         if not self.visible: return
         window.blit(self.image, (self.x, self.y))
+        if SHOW_HITBOXES: self.showHitbox(window)
 
     def hit(self):
         pass

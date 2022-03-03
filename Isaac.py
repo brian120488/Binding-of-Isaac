@@ -8,11 +8,11 @@ config.read('config.ini')
 
 WIDTH = int(config.get('settings', 'width', fallback=500))
 HEIGHT = int(config.get('settings', 'height', fallback=480))
-
 LEFT_BOUND = float(config['settings']['left_bound_scale']) * WIDTH
 RIGHT_BOUND = float(config['settings']['right_bound_scale']) * WIDTH
 TOP_BOUND = float(config['settings']['top_bound_scale']) * HEIGHT
 BOTTOM_BOUND = float(config['settings']['bottom_bound_scale']) * HEIGHT
+SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
 
 class Isaac(Sprite):
     ANIMATION_DELAY = 5
@@ -72,6 +72,8 @@ class Isaac(Sprite):
                 window.blit(self.heads[2][eyes], (headX, headY))
             case (_, -1):
                 window.blit(self.heads[0][eyes], (headX, headY))
+        
+        if SHOW_HITBOXES: self.showHitbox(window)
         
     def move(self):
         self.update()

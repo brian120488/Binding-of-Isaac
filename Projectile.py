@@ -7,6 +7,7 @@ config.read('config.ini')
 
 WIDTH = int(config.get('settings', 'width', fallback=500))
 HEIGHT = int(config.get('settings', 'height', fallback=480))
+SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
 
 class Projectile(Sprite):
     projectiles = []
@@ -30,8 +31,9 @@ class Projectile(Sprite):
         self.shotFrom = shotFrom
  
     def draw(self, window):
-        px = self.x - self.width / 2
-        window.blit(self.image, (px, self.y))
+        window.blit(self.image, (self.x, self.y))
+        
+        if SHOW_HITBOXES: self.showHitbox(window)
 
     def move(self):
         self.x += self.direction[0] * self.speed
