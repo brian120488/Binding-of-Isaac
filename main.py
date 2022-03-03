@@ -30,15 +30,32 @@ gameOverWill = pygame.image.load(f'{path}/last_will.png')
 gameOverWill = pygame.transform.scale(gameOverWill, (WIDTH * 0.5, HEIGHT * 0.8))
 rockImage = pygame.image.load(f'{path}/rock.png')
 
-isGameOver = False
-player = Isaac((WIDTH / 2, HEIGHT / 2))
-enemies = [Fly((100, 100)), Maw((300, 100))]
-rocks = []
+# isGameStart = True
+# isGameOver = False
+# player = Isaac((WIDTH / 2, HEIGHT / 2))
+# enemies = [Fly((100, 100)), Maw((300, 100))]
+# rocks = []
 
-bestTime = float(config['game']['best_time'])
-currTime = 0
+# bestTime = float(config['game']['best_time'])
+# currTime = 0
 
 # *** Global Functions ***
+def restartGame():
+    global isGameStart, isGameOver
+    global player, enemies
+    global rocks
+    global bestTime, currTime
+    
+    isGameStart = True
+    isGameOver = False
+    player = Isaac((WIDTH / 2, HEIGHT / 2))
+    enemies = [Fly((100, 100)), Maw((300, 100))]
+    rocks = []
+
+    bestTime = float(config['game']['best_time'])
+    currTime = 0
+    addRocks(rocks)
+
 def drawScore():
     font = pygame.font.SysFont("comicsans", 16, True, False)
     scoreText = font.render(f'Health: {player.health}', 1, (0))
@@ -68,14 +85,14 @@ def checkCollisionList(obj1, L):
             collisionList.append(obj)
     return collisionList
 
-def buildRocks(x, y, width, height, length, image):
+def buildRocks(rocks, x, y, width, height, length, image):
     image = pygame.transform.scale(image, (width, height))
     for i in range(length):
         px = x + i * width
         py = y
         rock = Sprite((px, py), (width, height), image)
         rocks.append(rock)
-
+        
 def drawRocks():
     for rock in rocks:
         rock.draw(window)
@@ -88,6 +105,9 @@ def isNextToRock(obj):
     if len(collisions) > 0:
         return True
     return False
+
+def drawGameStart():
+    pass
 
 def drawGameOver():
     midX = (WIDTH - gameOverWill.get_width()) / 2
@@ -120,40 +140,36 @@ def checkGameStats():
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
 
-def loadImageList(files):
-    L = []
-    for f in files:
-        L.append(pygame.image.load(f))
-    return L
+def addRocks(rocks):
+    width, height = 40, 40
 
-width, height = 40, 40
+    # top left corner
+    x = LEFT_BOUND
+    y = TOP_BOUND + height / 4
+    buildRocks(rocks, x, y, width, height, 2, rockImage)
+    buildRocks(rocks, x, y + height, width, height, 1, rockImage)
 
-# top left corner
-x = LEFT_BOUND
-y = TOP_BOUND + height / 4
-buildRocks(x, y, width, height, 2, rockImage)
-buildRocks(x, y + height, width, height, 1, rockImage)
+    # top right corner
+    x = RIGHT_BOUND - 2 * width
+    y = TOP_BOUND + height / 4
+    buildRocks(rocks, x, y, width, height, 2, rockImage)
+    buildRocks(rocks, x + width, y + height, width, height, 1, rockImage)
 
-# top right corner
-x = RIGHT_BOUND - 2 * width
-y = TOP_BOUND + height / 4
-buildRocks(x, y, width, height, 2, rockImage)
-buildRocks(x + width, y + height, width, height, 1, rockImage)
+    # bottom left corner
+    x = LEFT_BOUND
+    y = BOTTOM_BOUND - height
+    buildRocks(rocks, x, y, width, height, 2, rockImage)
+    buildRocks(rocks, x, y - height, width, height, 1, rockImage)
 
-# bottom left corner
-x = LEFT_BOUND
-y = BOTTOM_BOUND - height
-buildRocks(x, y, width, height, 2, rockImage)
-buildRocks(x, y - height, width, height, 1, rockImage)
-
-# bottom right corner
-x = RIGHT_BOUND - 2 * width
-y = BOTTOM_BOUND - height
-buildRocks(x, y, width, height, 2, rockImage)
-buildRocks(x + width, y - height, width, height, 1, rockImage)
+    # bottom right corner
+    x = RIGHT_BOUND - 2 * width
+    y = BOTTOM_BOUND - height
+    buildRocks(rocks, x, y, width, height, 2, rockImage)
+    buildRocks(rocks, x + width, y - height, width, height, 1, rockImage)
 
 
 # *** Pygame Loop ***
+restartGame()
 while True: 
     clock.tick(FPS)
 
@@ -161,10 +177,18 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-            
-    if isGameOver:
+    
+    keys = pygame.key.get_pressed()
+    if isGameStart:
+        drawGameStart()
+        if keys[pygame.K_SPACE]:
+            isGameStart = False
+        continue
+    elif isGameOver:
         drawGameOver()
         checkGameStats()
+        if keys[pygame.K_SPACE]:
+            restartGame()
         continue
     else:
         currTime += 1
