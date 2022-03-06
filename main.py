@@ -6,8 +6,6 @@ from Projectile import Projectile
 from Fly import Fly
 from Maw import Maw
 
-# TODO: instructions, hearts, make hitboxes smaller
-
 # *** Initilization ***
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('config.ini')
@@ -66,8 +64,10 @@ def drawScore():
     window.blit(scoreText, (10, 10))
 
 def drawHearts(window):
+    path = 'sprites'
+    heart = pygame.image.load(f'{path}/full_red_heart.png')
     for i in range(player.health):
-        pass
+        window.blit(heart, (15 + i * heart.get_width(), 15))
     
 def checkCollision(obj1, obj2):
     noXOverlap = obj1.getRight() <= obj2.getLeft() or obj1.getLeft() >= obj2.getRight()
