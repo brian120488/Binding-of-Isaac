@@ -139,6 +139,10 @@ def drawGameStart(window):
         logo = pygame.transform.scale(logo, (WIDTH, HEIGHT * 0.8))
     window.fill('white')
     window.blit(logo, (0, 0))
+    font = pygame.font.SysFont("arialblack", 16, True, False)
+    startText = font.render('Press SPACE to start.', 1, (0))
+    startTextWidth = startText.get_width()
+    window.blit(startText, ((WIDTH - startTextWidth) / 2, HEIGHT - 100))
     pygame.display.update()
 
 def drawGameOver(window):
@@ -160,6 +164,10 @@ def drawGameOver(window):
         window.blit(currTimeText, (10, HEIGHT - 50))
     bestTimeText = font.render(f'Best Time: {bestTime}', 1, (0))
     window.blit(bestTimeText, (10, HEIGHT - 30))
+    font = pygame.font.SysFont("arialblack", 16, True, False)
+    restartText = font.render('Press SPACE to restart.', 1, (0))
+    restartTextWidth = restartText.get_width()
+    window.blit(restartText, ((WIDTH - restartTextWidth) / 2, HEIGHT - 40))
     pygame.display.update()
 
 def checkGameStats():

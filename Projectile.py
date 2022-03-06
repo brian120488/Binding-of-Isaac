@@ -7,7 +7,7 @@ config.read('config.ini')
 
 WIDTH = int(config.get('settings', 'width', fallback=500))
 HEIGHT = int(config.get('settings', 'height', fallback=480))
-SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
+SHOW_HITBOXES = config['settings']['show_hitboxes'] == 'True'
 
 class Projectile(Sprite):
     projectiles = []

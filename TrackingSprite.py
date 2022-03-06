@@ -4,7 +4,7 @@ from AnimatedSprite import AnimatedSprite
 
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('config.ini')
-SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
+SHOW_HITBOXES = config['settings']['show_hitboxes'] == 'True'
 
 class TrackingSprite(AnimatedSprite):
     ANIMATION_DELAY = 1

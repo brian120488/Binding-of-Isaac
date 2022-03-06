@@ -3,7 +3,7 @@ import configparser
 
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('config.ini')
-SHOW_HITBOXES = bool(config['settings']['SHOW_HITBOXES'])
+SHOW_HITBOXES = config['settings']['show_hitboxes'] == 'True'
 
 class AnimatedSprite(Sprite):
     def __init__(self, coords, moveLists, animDelay):
