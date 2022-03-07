@@ -20,9 +20,11 @@ BOTTOM_BOUND = float(config['settings']['bottom_bound_scale']) * HEIGHT
 PATH = config.get('paths', 'sprites', fallback='sprites')
 
 pygame.init()
+pygame.mixer.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Binding of Isaac')  
 clock = pygame.time.Clock()
+music = pygame.mixer.music.load('music.mp3')
 
 # *** Global Functions ***
 def restartGame():
@@ -36,6 +38,7 @@ def restartGame():
     player = Isaac((WIDTH / 2, HEIGHT / 2))
     enemies = [Fly((100, 100)), Maw((300, 100))]
     rocks = []
+    Projectile.projectiles = []
 
     bestTime = float(config['game']['best_time'])
     currTime = 0
@@ -184,9 +187,12 @@ def checkGameStats():
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
 
+def playMusic():
+    pygame.mixer.music.play(-1)
 
 # *** Pygame Loop ***
 restartGame()
+playMusic()
 while True: 
     clock.tick(FPS)
 
