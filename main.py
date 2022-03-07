@@ -24,7 +24,6 @@ pygame.mixer.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Binding of Isaac')  
 clock = pygame.time.Clock()
-music = pygame.mixer.music.load('music.mp3')
 
 # *** Global Functions ***
 def restartGame():
@@ -188,6 +187,7 @@ def checkGameStats():
             config.write(configfile)
 
 def playMusic():
+    music = pygame.mixer.music.load('music.mp3')
     pygame.mixer.music.play(-1)
 
 # *** Pygame Loop ***
