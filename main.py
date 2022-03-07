@@ -200,6 +200,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            break
     
     keys = pygame.key.get_pressed()
     if isGameStart:
