@@ -12,14 +12,14 @@ SHOW_HITBOXES = config['settings']['show_hitboxes'] == 'True'
 class Projectile(Sprite):
     projectiles = []
     
-    @staticmethod
-    def drawAll(window):
-        for proj in Projectile.projectiles:
+    @classmethod
+    def drawAll(cls, window):
+        for proj in cls.projectiles:
             proj.draw(window)
 
-    @staticmethod
-    def moveAll():
-        for proj in Projectile.projectiles:
+    @classmethod
+    def moveAll(cls):
+        for proj in cls.projectiles:
             proj.move()
     
     def __init__(self, coords, size, speed, direction, shotFrom):
