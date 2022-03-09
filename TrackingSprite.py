@@ -1,9 +1,11 @@
 import pygame, math
 import configparser
+from Sprite import Sprite
 from AnimatedSprite import AnimatedSprite
 
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('config.ini')
+PATH = config.get('paths', 'sprites', fallback='sprites')
 SHOW_HITBOXES = config['settings']['show_hitboxes'] == 'True'
 
 class TrackingSprite(AnimatedSprite):
@@ -36,4 +38,10 @@ class TrackingSprite(AnimatedSprite):
         self.y += self.SPEED * abs(math.sin(ang)) * (dy/abs(dy))
         self.xDirection = 1 if dx > 0 else -1
 
+    def drop(self, hearts):
+        global rockImage
+        if 'heartDropImage' not in globals():
+            heartDropImage = pygame.image.load(f'{PATH}/heart_drop.png') 
+        heart = Sprite((self.x, self.y), heartDropImage.get_size(), heartDropImage)
+        hearts.append(heart)
         

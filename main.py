@@ -30,6 +30,7 @@ def restartGame():
     global isGameStart, isGameOver
     global player, enemies
     global rocks
+    global hearts
     global bestTime, currTime
     
     isGameStart = True
@@ -37,6 +38,7 @@ def restartGame():
     player = Isaac((WIDTH / 2, HEIGHT / 2))
     enemies = [Fly((100, 100)), Maw((300, 100))]
     rocks = []
+    hearts = []
     Projectile.projectiles = []
 
     bestTime = float(config['game']['best_time'])
@@ -55,6 +57,8 @@ def drawWindow():
     for enemy in enemies:
         enemy.track(player)
         enemy.draw(window)
+    for heart in hearts:
+        heart.draw(window)
     Projectile.drawAll(window)
     player.draw(window)
     drawHearts(window)
@@ -204,7 +208,8 @@ while True:
             pygame.quit()
             sys.exit()
             break
-    
+
+    # game controller
     keys = pygame.key.get_pressed()
     if isGameStart:
         drawGameStart(window)
@@ -220,6 +225,7 @@ while True:
     else:
         currTime += 1
 
+    # collisions
     projectiles = Projectile.projectiles
     for enemy in enemies:
         for proj in projectiles:
@@ -227,6 +233,7 @@ while True:
                 projectiles.remove(proj)
                 enemy.health -= 1;
                 if enemy.health <= 0:
+                    enemy.drop(hearts)
                     enemies.remove(enemy)
             elif proj.shotFrom != 'Isaac' and checkCollision(proj, player) and not player.isImmune:
                 projectiles.remove(proj)
@@ -243,6 +250,11 @@ while True:
             if random.random() < 0.005:
                 enemy.shoot(player)
     
+    for heart in hearts:
+        if checkCollision(player, heart):
+            player.health += 1
+            hearts.remove(heart)
+            
     for rock in rocks:
         if checkCollision(player, rock):
             player.reset()
