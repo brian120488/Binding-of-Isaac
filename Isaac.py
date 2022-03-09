@@ -155,7 +155,7 @@ class Isaac(Sprite):
         projectiles = Projectile.projectiles
         if self.projectileTimer >= self.fireDelay:
             self.projectileTimer = 0
-            px = (self.getLeft() + self.getRight()) / 2
+            px = self.getLeft() + self.width / 4
             py = self.getTop() + self.height / 10
             tearSize = 4
             tearSPEED = 3.5
