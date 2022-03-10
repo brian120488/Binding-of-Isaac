@@ -154,29 +154,28 @@ def drawRocks():
     for rock in rocks:
         rock.draw(window)
 
-def isNextToRock(obj):
-    bottom = obj.getBottom()
-    obj.setBottom(bottom + 5)
-    collisions = checkCollisionList(obj, platforms)
-    obj.setBottom(bottom)
-    if len(collisions) > 0:
-        return True
-    return False
-
 def drawGameStart(window):
     global logo
     if 'logo' not in globals():
         logo = pygame.image.load(f'{PATH}/binding_of_isaac_logo.png').convert()
         logo = pygame.transform.scale(logo, (WIDTH, HEIGHT * 0.8))
+        
     window.fill('white')
     window.blit(logo, (0, 0))
     font = pygame.font.SysFont("arialblack", 16, True, False)
+    
     instructions = font.render('WASD to move. Arrow keys to shoot.', 1, (0))
     instructionsWidth = instructions.get_width()
     window.blit(instructions, ((WIDTH - instructionsWidth) / 2, HEIGHT - 130))
+    
     startText = font.render('Press SPACE to start.', 1, (0))
     startTextWidth = startText.get_width()
     window.blit(startText, ((WIDTH - startTextWidth) / 2, HEIGHT - 100))
+    
+    bestTimeText = font.render(f'Best Time: {bestTime}', 1, (0))
+    bestTimeTextWidth = bestTimeText.get_width()
+    window.blit(bestTimeText, ((WIDTH - bestTimeTextWidth) / 2, HEIGHT - 70))
+    
     pygame.display.update()
 
 def drawGameOver(window):
@@ -227,7 +226,7 @@ restartGame()
 playMusic()
 while True: 
     clock.tick(FPS)
-
+    keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -235,7 +234,6 @@ while True:
             break
 
     # game controller
-    keys = pygame.key.get_pressed()
     if isGameStart:
         drawGameStart(window)
         if keys[pygame.K_SPACE]:
@@ -287,8 +285,7 @@ while True:
 
     player.move()
     Projectile.moveAll()
-    
-    keys = pygame.key.get_pressed()
+
     if keys[pygame.K_LEFT]:
         player.shoot((-1, 0))
     elif keys[pygame.K_RIGHT]:
