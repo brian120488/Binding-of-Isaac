@@ -52,7 +52,9 @@ class Isaac(Sprite):
         frame = self.moveCount // self.ANIMATION_DELAY
         headX, headY = self.x, self.y - self.height / 2
         legsX, legsY = self.x + 5, self.y + 3
+        # close eyes
         eyes = 1 if self.projectileTimer <= self.shootingDuration else 0
+        # flicker when hit
         if self.immuneCount % (2 * self.FLICKER_LENGTH) >= self.FLICKER_LENGTH: return
         match self.directionMoving:
             case (-1, _): 
