@@ -22,7 +22,7 @@ class Projectile(Sprite):
         for proj in cls.projectiles:
             proj.move()
     
-    def __init__(self, coords, size, speed, direction, shotFrom):
+    def __init__(self, coords, size=1, speed=0, direction=0, shotFrom=None):
         path = 'sprites/tears'
         image = pygame.image.load(f'{path}/tear_{size}.png')
         super().__init__(coords, image.get_size(), image)
