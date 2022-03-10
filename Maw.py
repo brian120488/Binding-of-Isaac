@@ -6,6 +6,7 @@ class Maw(TrackingSprite):
     ANIMATION_DELAY = 3
     SPEED = 0.5
     MAX_HEALTH = 5
+    SHOOT_CHANCE = 0.005
 
     def __init__(self, coords):
         path = 'sprites/maw'

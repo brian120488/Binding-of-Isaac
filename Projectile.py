@@ -32,7 +32,6 @@ class Projectile(Sprite):
  
     def draw(self, window):
         window.blit(self.image, (self.x, self.y))
-        
         if SHOW_HITBOXES: self.showHitbox(window)
 
     def move(self):

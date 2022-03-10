@@ -16,10 +16,10 @@ class Sprite(object):
             self.image = image
             self.width = self.image.get_width()
             self.height = self.image.get_height()
-        self.visible = True
+        self.isVisible = True
 
     def draw(self, window):
-        if not self.visible: return
+        if not self.isVisible: return
         window.blit(self.image, (self.x, self.y))
         if SHOW_HITBOXES: self.showHitbox(window)
 

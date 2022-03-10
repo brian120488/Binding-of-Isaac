@@ -12,9 +12,10 @@ class TrackingSprite(AnimatedSprite):
     ANIMATION_DELAY = 1
     SPEED = 1
     MAX_HEALTH = 1
+    DROP_CHANCE = 0.5
 
     def __init__(self, coords, moveLists):
-        super().__init__(coords, moveLists, self.__class__.ANIMATION_DELAY)
+        super().__init__(coords, moveLists, self.ANIMATION_DELAY)
         self.health = self.MAX_HEALTH
         self.xDirection = 1
 
@@ -39,7 +40,7 @@ class TrackingSprite(AnimatedSprite):
         self.xDirection = 1 if dx > 0 else -1
 
     def drop(self, hearts):
-        global rockImage
+        global heartDropImage
         if 'heartDropImage' not in globals():
             heartDropImage = pygame.image.load(f'{PATH}/heart_drop.png') 
         heart = Sprite((self.x, self.y), heartDropImage.get_size(), heartDropImage)

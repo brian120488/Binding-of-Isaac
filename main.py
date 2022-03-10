@@ -258,7 +258,7 @@ while True:
                 projectiles.remove(proj)
                 enemy.health -= 1;
                 if enemy.health <= 0:
-                    if random.random() < 0.5:
+                    if random.random() < enemy.DROP_CHANCE:
                         enemy.drop(hearts)
                     enemies.remove(enemy)
             elif proj.shotFrom != 'Isaac' and checkCollision(proj, player) and not player.isImmune:
@@ -273,7 +273,7 @@ while True:
             continue
         
         if isinstance(enemy, Maw):
-            if random.random() < 0.005:
+            if random.random() < enemy.SHOOT_CHANCE:
                 enemy.shoot(player)
     
     for heart in hearts:
