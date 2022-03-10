@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, random
 import configparser
 from Sprite import Sprite
 from AnimatedSprite import AnimatedSprite

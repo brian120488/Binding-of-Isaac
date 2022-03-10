@@ -13,10 +13,11 @@ config.read('config.ini')
 FPS = int(config.get('settings', 'fps', fallback=60))
 WIDTH = int(config.get('settings', 'width', fallback=500))
 HEIGHT = int(config.get('settings', 'height', fallback=480))
-LEFT_BOUND = float(config['settings']['left_bound_scale']) * WIDTH
-RIGHT_BOUND = float(config['settings']['right_bound_scale']) * WIDTH
-TOP_BOUND = float(config['settings']['top_bound_scale']) * HEIGHT
-BOTTOM_BOUND = float(config['settings']['bottom_bound_scale']) * HEIGHT
+LEFT_BOUND = int(float(config['settings']['left_bound_scale']) * WIDTH)
+RIGHT_BOUND = int(float(config['settings']['right_bound_scale']) * WIDTH)
+TOP_BOUND = int(float(config['settings']['top_bound_scale']) * HEIGHT)
+BOTTOM_BOUND = int(float(config['settings']['bottom_bound_scale']) * HEIGHT)
+ENEMY_NUM = int(config.get('settings', 'enemy_num', fallback=480))
 PATH = config.get('paths', 'sprites', fallback='sprites')
 
 pygame.init()
@@ -36,7 +37,7 @@ def restartGame():
     isGameStart = True
     isGameOver = False
     player = Isaac((WIDTH / 2, HEIGHT / 2))
-    enemies = [Fly((100, 100)), Maw((300, 100))]
+    enemies = spawnEnemies(ENEMY_NUM)
     rocks = []
     hearts = []
     Projectile.projectiles = []
@@ -44,6 +45,30 @@ def restartGame():
     bestTime = float(config['game']['best_time'])
     currTime = 0
     addRocks(rocks)
+
+def spawnEnemies(enemyNum):
+        # paddings - size of the spawn area next to borders
+        paddingLength = int(WIDTH / 8)
+        paddingHeight = int(HEIGHT / 8)
+        xIntervals = [
+            (LEFT_BOUND, LEFT_BOUND + paddingLength), 
+            (RIGHT_BOUND - paddingLength, RIGHT_BOUND)
+        ]
+        yIntervals = [
+            (TOP_BOUND, TOP_BOUND + paddingHeight),
+            (BOTTOM_BOUND - paddingHeight, BOTTOM_BOUND)
+        ]
+        enemies = []
+        for i in range(enemyNum):
+            xInterval = random.choice(xIntervals)
+            yInterval = random.choice(yIntervals)
+            spawn = (random.randint(*xInterval), random.randint(*yInterval))
+            if random.random() < 0.67:
+                enemy = Fly(spawn)
+            else:
+                enemy = Maw(spawn)
+            enemies.append(enemy) 
+        return enemies
 
 def drawWindow():
     global background
@@ -233,7 +258,8 @@ while True:
                 projectiles.remove(proj)
                 enemy.health -= 1;
                 if enemy.health <= 0:
-                    enemy.drop(hearts)
+                    if random.random() < 0.5:
+                        enemy.drop(hearts)
                     enemies.remove(enemy)
             elif proj.shotFrom != 'Isaac' and checkCollision(proj, player) and not player.isImmune:
                 projectiles.remove(proj)
